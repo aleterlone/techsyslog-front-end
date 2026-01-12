@@ -1,0 +1,80 @@
+<hr class="my-4" />
+
+<section class="d-flex mt-4 justify-content-center">
+  <form [formGroup]="formulario" (ngSubmit)="entrar()">
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="form-label" for="email">E-mail:</label>
+
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          maxlength="200"
+          formControlName="email"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['email'].hasError('required') ||
+              f['email'].hasError('email')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['email'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">E-mail em branco!</div>
+          }
+
+          @if (f['dt_cadastro'].hasError('email')) {
+            <div class="fs-7 fw-bold text-danger">E-mail inválido!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-12">
+        <label class="form-label" for="senha">Senha:</label>
+
+        <input
+          class="form-control"
+          type="password"
+          id="senha"
+          maxlength="50"
+          formControlName="senha"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['senha'].hasError('required')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['senha'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Senha em branco!</div>
+          }
+        }
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex">
+      <button class="btn btn-outline-primary" type="submit">Acessar</button>
+
+      <div class="ms-2">
+        <button class="btn btn-link" type="button">Esqueceu a senha?</button>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex flex-column align-items-center">
+      <div class="fs-5 fw-bold">Não tem cadastro?</div>
+
+      <div class="pt-2">
+        <button class="btn btn-outline-success" type="button" (click)="novoCadastro()">Novo cadastro</button>
+      </div>
+    </div>
+  </form>
+</section>

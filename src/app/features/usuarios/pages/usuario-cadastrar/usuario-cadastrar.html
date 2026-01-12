@@ -1,0 +1,136 @@
+<app-pagina-titulo [titulo]="titulo"></app-pagina-titulo>
+
+<section class="container border rounded p-4 mt-4">
+  <form [formGroup]="formulario" (ngSubmit)="salvar()">
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="form-label" for="nome">Nome:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="nome"
+          maxlength="150"
+          formControlName="nome"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['nome'].hasError('required') ||
+              f['nome'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['nome'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Nome em branco!</div>
+          }
+
+          @if (f['nome'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-6">
+        <label class="form-label" for="email">E-mail:</label>
+
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          maxlength="200"
+          formControlName="email"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['email'].hasError('required') ||
+              f['email'].hasError('email')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['email'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">E-mail em branco!</div>
+          }
+
+          @if (f['email'].hasError('email')) {
+            <div class="fs-7 fw-bold text-danger">E-mail inválido!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-3">
+        <label class="form-label" for="senha">Senha:</label>
+
+        <input
+          class="form-control"
+          type="password"
+          id="senha"
+          maxlength="50"
+          formControlName="senha"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['senha'].hasError('required') ||
+              f['senha'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['senha'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Senha em branco!</div>
+          }
+
+          @if (f['senha'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 6 caracteres!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-3">
+        <label class="form-label" for="senhaConfirmar">Confirmar senha:</label>
+
+        <input
+          class="form-control"
+          type="password"
+          id="senhaConfirmar"
+          maxlength="50"
+          formControlName="senha_confirmar"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              f['senha_confirmar'].hasError('required') ||
+              f['senha_confirmar'].hasError('minlength') ||
+              f['senha_confirmar'].hasError('diferentes')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (f['senha_confirmar'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Confirmar senha em branco!</div>
+          }
+
+          @if (f['senha_confirmar'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 6 caracteres!</div>
+          }
+
+          @if (f['senha_confirmar'].hasError('diferentes')) {
+            <div class="fs-7 fw-bold text-danger">Senhas diferentes!</div>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="d-flex mt-4">
+      <button class="btn btn-outline-success" type="submit">Salvar</button>
+
+      <div class="ms-2">
+        <button class="btn btn-outline-secondary" type="button" (click)="voltar()">Voltar</button>
+      </div>
+    </div>
+  </form>
+</section>

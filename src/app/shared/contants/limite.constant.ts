@@ -1,0 +1,3 @@
+export const LIMITE = {
+  VALOR_DECIMAL_BR: 999999.999
+};

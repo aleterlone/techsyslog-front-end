@@ -1,0 +1,309 @@
+<app-pagina-titulo titulo="Pedidos (Cadastrar)"></app-pagina-titulo>
+
+<section class="container border rounded p-4 mt-4">
+  <form [formGroup]="formularioPedidoSintetico" (ngSubmit)="salvar()">
+    <div class="row">
+      <div class="col-sm-2">
+        <label class="form-label" for="dataCadastro">Dt. Cadastro:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="dataCadastro"
+          maxlength="10"
+          placeholder="DD/MM/AAAA"
+          formControlName="dt_cadastro"
+          ngbDatepicker
+          #dt_cadastro="ngbDatepicker"
+          [firstDayOfWeek]="7"
+          (click)="dt_cadastro.toggle()"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fp['dt_cadastro'].hasError('required') ||
+              fp['dt_cadastro'].hasError('ngbDate')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fp['dt_cadastro'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Dt. Cadastro em branco!</div>
+          }
+
+          @if (fp['dt_cadastro'].hasError('ngbDate')) {
+            <div class="fs-7 fw-bold text-danger">Dt. Cadastro inválida!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-10">
+        <label class="form-label" for="nome">Nome:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="nome"
+          maxlength="150"
+          formControlName="nome"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fp['nome'].hasError('required') ||
+              fp['nome'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fp['nome'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Nome em branco!</div>
+          }
+
+          @if (fp['nome'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-10">
+        <label class="form-label" for="descricao">Descrição:</label>
+
+        <textarea
+          class="form-control"
+          type="text"
+          id="descricao"
+          rows="1"
+          formControlName="descricao"></textarea>
+      </div>
+
+      <div class="col-sm-2 text-end">
+        <label class="form-label" for="valorTotal">Total: R$</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="valorTotal"
+          maxlength="15"
+          formControlName="valor_total"
+          appValorMonetario
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fp['valor_total'].hasError('required') ||
+              fp['valor_total'].hasError('invalid')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fp['valor_total'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Total: R$ em branco!</div>
+          }
+
+          @if (fp['valor_total'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Total: R$ inválido!</div>
+          }
+        }
+      </div>
+    </div>
+  </form>
+
+  <div class="my-4">
+    <app-pagina-titulo titulo="Endereço de entrega"></app-pagina-titulo>
+  </div>
+
+  <form [formGroup]="formularioEndereco">
+    <div class="row">
+      <div class="col-sm-2">
+        <label class="form-label" for="cep">CEP:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="cep"
+          maxlength="9"
+          formControlName="cep"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['cep'].hasError('required') ||
+              fe['cep'].hasError('invalid')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['cep'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">CEP em branco!</div>
+          }
+
+          @if (fe['cep'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">CEP inválido!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-8">
+        <label class="form-label" for="logradouro">Logradouro:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="logradouro"
+          maxlength="150"
+          formControlName="logradouro"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['logradouro'].hasError('required') ||
+              fe['logradouro'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['logradouro'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Logradouro em branco!</div>
+          }
+
+          @if (fe['logradouro'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-2">
+        <label class="form-label" for="numero">Número:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="numero"
+          maxlength="10"
+          formControlName="numero"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['numero'].hasError('required')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['numero'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Número em branco!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-6">
+        <label class="form-label" for="complemento">Complemento:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="complemento"
+          maxlength="50"
+          formControlName="complemento"
+        />
+      </div>
+
+      <div class="col-sm-6">
+        <label class="form-label" for="bairro">Bairro:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="bairro"
+          maxlength="100"
+          formControlName="bairro"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['bairro'].hasError('required') ||
+              fe['bairro'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['bairro'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Bairro em branco!</div>
+          }
+
+          @if (fe['bairro'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
+      </div>
+
+      <div class="col-sm-10">
+        <label class="form-label" for="cidade">Cidade:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="cidade"
+          maxlength="150"
+          formControlName="cidade"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['cidade'].hasError('required') ||
+              fe['cidade'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['cidade'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Cidade em branco!</div>
+          }
+
+          @if (fe['cidade'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
+      </div>
+
+      <!-- Estado -->
+
+      <div class="col-sm-2">
+        <label class="form-label" for="estado">Estado:</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="estado"
+          maxlength="2"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fe['estado'].hasError('required') ||
+              fe['estado'].hasError('minlength')
+            )
+          "
+        />
+
+        @if (formularioEnviado) {
+          @if (fe['estado'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Estado em branco!</div>
+          }
+
+          @if (fe['estado'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 2 caracteres!</div>
+          }
+        }
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex mt-4">
+    <button class="btn btn-outline-success" type="button" (click)="salvar()">Salvar</button>
+
+    <div class="ms-2">
+      <button class="btn btn-outline-secondary" type="button" (click)="voltar()">Voltar</button>
+    </div>
+  </div>
+</section>

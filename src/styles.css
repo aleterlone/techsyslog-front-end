@@ -1,0 +1,14 @@
+/* Bootstrap */
+
+.btn {
+  min-width: 180px;
+}
+
+/* NgbDatePicker */
+
+.btn.ngb-dp-arrow-btn {
+	min-width: initial;
+}
+.ngb-dp-weekday.small {
+  color: var(--bs-primary);
+}

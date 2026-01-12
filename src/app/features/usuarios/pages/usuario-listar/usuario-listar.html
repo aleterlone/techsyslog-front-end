@@ -1,0 +1,31 @@
+<app-pagina-titulo titulo="Usuários (Listar)"></app-pagina-titulo>
+
+<section class="container">
+  <div class="mt-4">
+    <button class="btn btn-outline-primary" type="buttom" (click)="incluir()">Incluir</button>
+  </div>
+
+  <hr class="my-4" />
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (usuario of usuarios; track usuario.id) {
+          <tr>
+            <td>{{ usuario.nome }}</td>
+            <td>{{ usuario.email }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
