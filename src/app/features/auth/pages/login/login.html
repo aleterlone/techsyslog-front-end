@@ -26,7 +26,7 @@
             <div class="fs-7 fw-bold text-danger">E-mail em branco!</div>
           }
 
-          @if (f['dt_cadastro'].hasError('email')) {
+          @if (f['email'].hasError('invalid')) {
             <div class="fs-7 fw-bold text-danger">E-mail inválido!</div>
           }
         }

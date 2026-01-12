@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 // Shared
 
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
-import { REGEX } from '../../../../shared/contants';
+import { REGEX } from '../../../../shared/constants';
+import { ToastEstilo } from '../../../../shared/enums';
+import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
 import { validarNumeroDecimal } from '../../../../shared/validators';
 import { ValorMonetarioDirective } from '../../../../shared/directives/valor-monetario';
 
@@ -15,8 +17,9 @@ import { ValorMonetarioDirective } from '../../../../shared/directives/valor-mon
   imports: [
     NgbDatepickerModule,
     ReactiveFormsModule,
-ValorMonetarioDirective,
-    PaginaTitulo
+
+    PaginaTitulo,
+    ValorMonetarioDirective
   ],
   templateUrl: './pedido-cadastrar.html',
   styleUrl: './pedido-cadastrar.css',
@@ -25,6 +28,8 @@ ValorMonetarioDirective,
 export class PedidoCadastrar {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
+
+  private readonly _toastService = inject(ToastService);
 
   // Formulários
 
@@ -75,7 +80,7 @@ export class PedidoCadastrar {
     this.formularioEnviado = true;
 
     if (!this.formularioEndereco.valid || !this.formularioPedidoSintetico.valid) {
-      alert("Campos inválidos!");
+      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
 
       return;
     }

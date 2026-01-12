@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
+// Shared
+
+import { DADOS } from '../../constants/dados.constant';
+
 @Component({
   selector: 'app-menu-superior',
   imports: [
@@ -12,6 +16,8 @@ import { Router, RouterLink } from '@angular/router';
 
 export class MenuSuperior {
   private readonly _router = inject(Router);
+
+  empresaNome: string = DADOS.EMPRESA_NOME;
 
   constructor() { }
 

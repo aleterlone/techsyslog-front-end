@@ -2,6 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+// Shared
+
+import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
+import { ToastEstilo } from '../../../../shared/enums';
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -14,6 +19,8 @@ import { Router } from '@angular/router';
 export class Login {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
+
+  private readonly _toastService = inject(ToastService);
 
   // Formulário
 
@@ -36,10 +43,12 @@ export class Login {
     this.formularioEnviado = true;
 
     if (!this.formulario.valid) {
-      this._router.navigate(["/home"]);
-    } else {
-      alert("Campos inválidos!");
+      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
+
+      return;
     }
+
+    this._router.navigate(["/home"]);
   }
 
   novoCadastro() {

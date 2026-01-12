@@ -3,7 +3,7 @@ import { NgControl } from '@angular/forms';
 
 // Shared
 
-import { REGEX } from '../contants';
+import { REGEX } from '../constants';
 
 @Directive({
   selector: '[appValorMonetario]',

@@ -2,8 +2,8 @@ import { AbstractControl, ValidationErrors } from "@angular/forms";
 
 // Shared
 
-import { LIMITE, REGEX } from "../contants";
 import { formatarMoeda } from "../formatters";
+import { LIMITE, REGEX } from "../constants";
 
 export function validarNumeroDecimal(
   controle: string

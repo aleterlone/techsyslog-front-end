@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 // Shared
 
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
+import { ToastEstilo } from '../../../../shared/enums';
+import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
 import { ValoresIguaisValidator } from '../../../../shared/validators/valores.iguais.validator';
 
 @Component({
@@ -21,6 +23,8 @@ import { ValoresIguaisValidator } from '../../../../shared/validators/valores.ig
 export class UsuarioCadastrar {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
+
+  private readonly _toastService = inject(ToastService);
 
   // Formulário
 
@@ -61,7 +65,7 @@ export class UsuarioCadastrar {
     this.formularioEnviado = true;
 
     if (!this.formulario.valid) {
-      alert("Campos inválidos!");
+      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
 
       return;
     }
