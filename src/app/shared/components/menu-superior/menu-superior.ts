@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
+// Features
+
+import { AuthService } from '../../../features/auth/services/auth-service';
+
 // Shared
 
 import { DADOS } from '../../constants/dados.constant';
@@ -17,11 +21,15 @@ import { DADOS } from '../../constants/dados.constant';
 export class MenuSuperior {
   private readonly _router = inject(Router);
 
+  private readonly _authService = inject(AuthService);
+
   empresaNome: string = DADOS.EMPRESA_NOME;
 
   constructor() { }
 
   sair() {
-    this._router.navigate(["/login"]);
+    this._authService.logout().subscribe(() => {
+      this._router.navigate(["/login"]);
+    })
   }
 }

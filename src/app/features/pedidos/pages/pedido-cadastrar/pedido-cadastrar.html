@@ -74,7 +74,25 @@
           type="text"
           id="descricao"
           rows="1"
-          formControlName="descricao"></textarea>
+          formControlName="descricao"
+          [class.is-invalid]="
+            formularioEnviado &&
+            (
+              fp['descricao'].hasError('required') ||
+              fp['descricao'].hasError('minlength')
+            )
+          "
+        ></textarea>
+
+        @if (formularioEnviado) {
+          @if (fp['descricao'].hasError('required')) {
+            <div class="fs-7 fw-bold text-danger">Descrição em branco!</div>
+          }
+
+          @if (fp['descricao'].hasError('minlength')) {
+            <div class="fs-7 fw-bold text-danger">Mínimo de 3 caracteres!</div>
+          }
+        }
       </div>
 
       <div class="col-sm-2 text-end">

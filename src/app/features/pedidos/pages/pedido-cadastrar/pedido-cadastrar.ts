@@ -2,9 +2,20 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+
+// Features
+
+import { PedidoService } from '../../services/pedido-service';
+
+// Models
+
+import { Endereco } from '../../../enderecos/models/endereco';
+import { PedidoSintetico } from '../../models/pedido-sintetico';
 
 // Shared
 
+import { formatarNumeroDecimal } from '../../../../shared/formatters';
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
 import { REGEX } from '../../../../shared/constants';
 import { ToastEstilo } from '../../../../shared/enums';
@@ -28,6 +39,8 @@ import { ValorMonetarioDirective } from '../../../../shared/directives/valor-mon
 export class PedidoCadastrar {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
+
+  private readonly _pedidoService = inject(PedidoService);
 
   private readonly _toastService = inject(ToastService);
 
@@ -61,7 +74,7 @@ export class PedidoCadastrar {
       nro_pedido: [{ value: 0, disabled: true }],
       dt_cadastro: [dataHoje, Validators.required],
       nome: ["", [Validators.required, Validators.minLength(3)]],
-      descricao: [""],
+      descricao: ["", [Validators.required, Validators.minLength(3)]],
       valor_total: ["", Validators.required]
     }, {
       validators: validarNumeroDecimal("valor_total")
@@ -76,6 +89,44 @@ export class PedidoCadastrar {
     return this.formularioPedidoSintetico.controls;
   }
 
+  definirPedidoSintetico() {
+    return new Observable<PedidoSintetico>((observer) => {
+      let complemento: string | null = null;
+
+      if (this.fe["complemento"].value != null && this.fe["complemento"].value != "") {
+        complemento = this.fe["complemento"].value.toString().trim();
+      }
+
+      const enderecoEntrega: Endereco = {
+        cep: this.fe["cep"].value.toString(),
+        logradouro: this.fe["logradouro"].value.toString().trim(),
+        numero: this.fe["numero"].value.toString().trim(),
+        complemento: complemento,
+        bairro: this.fe["bairro"].value.toString().trim(),
+        cidade: this.fe["cidade"].value.toString().trim(),
+        estado: this.fe["estado"].value.toString().trim()
+      };
+
+      const pedidoSintetico: PedidoSintetico = {
+        id: null,
+        nroPedido: null,
+        dataCadastro: new Date(),
+        dataEntrega: null,
+        descricao: this.fp["email"].value.toString().trim(),
+        valorTotal: formatarNumeroDecimal(this.fp["valor_total"].value),
+        enderecoEntrega: enderecoEntrega
+      }
+
+      observer.next(pedidoSintetico);
+      observer.complete();
+    });
+  }
+
+  limparFormulario() {
+    this.formularioEndereco.reset();
+    this.formularioPedidoSintetico.reset();
+  }
+
   salvar() {
     this.formularioEnviado = true;
 
@@ -84,6 +135,16 @@ export class PedidoCadastrar {
 
       return;
     }
+
+    this.definirPedidoSintetico().subscribe((pedidoSinteticoDefinido) => {
+      this._pedidoService.incluir(pedidoSinteticoDefinido).subscribe((resultado) => {
+        if (resultado != null) {
+          this.limparFormulario();
+
+          this._toastService.exibir(ToastEstilo.Danger, "Pedido incluído com sucesso!");
+        }
+      });
+    });
   }
 
   voltar() {

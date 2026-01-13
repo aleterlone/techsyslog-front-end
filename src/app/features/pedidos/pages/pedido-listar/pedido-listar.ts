@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+// Features
+
+import { PedidoService } from '../../services/pedido-service';
+
 // Models
 
 import { PedidoSintetico } from '../../models/pedido-sintetico';
@@ -21,11 +25,23 @@ import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina
 export class PedidoListar {
   private readonly _router = inject(Router);
 
+  private readonly _pedidoService = inject(PedidoService);
+
   pedidosSinteticos: PedidoSintetico[] = [];
 
   constructor() { }
 
+  ngOnInit() {
+    this.obterDados();
+  }
+
   incluir() {
     this._router.navigate(["/home/pedido-cadastrar"]);
+  }
+
+  obterDados() {
+    this._pedidoService.obter().subscribe((resultado) => {
+      this.pedidosSinteticos = resultado;
+    });
   }
 }

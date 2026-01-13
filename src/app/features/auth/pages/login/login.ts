@@ -2,6 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+// Features
+
+import { AuthService } from '../../services/auth-service';
+
 // Shared
 
 import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
@@ -19,6 +23,8 @@ import { ToastEstilo } from '../../../../shared/enums';
 export class Login {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
+
+  private readonly _authService = inject(AuthService);
 
   private readonly _toastService = inject(ToastService);
 
@@ -48,7 +54,13 @@ export class Login {
       return;
     }
 
-    this._router.navigate(["/home"]);
+    this._authService.login().subscribe((resultado) => {
+      if (resultado) {
+        this._router.navigate(["/home"]);
+      } else {
+        this._toastService.exibir(ToastEstilo.Danger, "Usuário inválido!");
+      }
+    });
   }
 
   novoCadastro() {

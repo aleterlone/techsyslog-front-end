@@ -1,13 +1,13 @@
 // Models
 
-import { Endereco } from "../../enderecos/services/endereco";
+import { Endereco } from "../../enderecos/models/endereco";
 
 export interface PedidoSintetico {
   id: number | null;
-  nroPedido: number;
+  nroPedido: number | null;
   dataCadastro: Date;
   dataEntrega: Date | null;
   descricao: string;
-  valor: number;
+  valorTotal: number;
   enderecoEntrega: Endereco | null;
 }
