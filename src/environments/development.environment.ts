@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  urlAPI: "https://localhost:44352/api",
-  urlHUB: "https://localhost:44352"
+  urlAPI: "https://localhost:7131/api",
+  urlHUB: "https://localhost:7131"
 };

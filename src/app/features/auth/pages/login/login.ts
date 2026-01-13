@@ -1,10 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 // Features
 
 import { AuthService } from '../../services/auth-service';
+
+// Models
+
+import { AuthLogin } from '../../models/auth-login';
 
 // Shared
 
@@ -45,6 +50,18 @@ export class Login {
     return this.formulario.controls;
   }
 
+  definirLogin(): Observable<AuthLogin> {
+    return new Observable<AuthLogin>((observer) => {
+      const authLogin: AuthLogin = {
+        email: this.f["email"].value.toString().trim().toUpperCase(),
+        senha: this.f["senha"].value.toString()
+      };
+
+      observer.next(authLogin);
+      observer.complete();
+    });
+  }
+
   entrar() {
     this.formularioEnviado = true;
 
@@ -54,12 +71,14 @@ export class Login {
       return;
     }
 
-    this._authService.login().subscribe((resultado) => {
-      if (resultado) {
-        this._router.navigate(["/home"]);
-      } else {
-        this._toastService.exibir(ToastEstilo.Danger, "Usuário inválido!");
-      }
+    this.definirLogin().subscribe((authLoginDefinido) => {
+      this._authService.login(authLoginDefinido).subscribe((resultado) => {
+        if (resultado) {
+          this._router.navigate(["/home"]);
+        } else {
+          this._toastService.exibir(ToastEstilo.Danger, "Usuário inválido!");
+        }
+      });
     });
   }
 

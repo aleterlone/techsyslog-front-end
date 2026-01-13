@@ -20,7 +20,6 @@ export const routes: Routes = [
   {
     path: "",
     component: AuthLayout,
-    canActivate: [authGuard],
     children: [
       { path: "", pathMatch: "full", component: Login },
       { path: "login", component: Login },
