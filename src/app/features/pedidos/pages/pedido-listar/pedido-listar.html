@@ -1,5 +1,10 @@
 <app-pagina-titulo titulo="Pedidos (Listar)"></app-pagina-titulo>
 
+<app-pedido-movimentar-modal
+  [pedidoSintetico]="pedidoSinteticoMovimentar"
+  (resultadoPedidoMovimentar)="receberPedidoMovimentar($event)">
+</app-pedido-movimentar-modal>
+
 <section class="container">
   <div class="mt-4">
     <button class="btn btn-outline-primary" type="buttom" (click)="incluir()">Incluir</button>
@@ -12,21 +17,34 @@
       <thead>
         <tr>
           <th></th>
-          <th scope="col">Id</th>
+          <th class="text-center" scope="col">Id</th>
+          <th class="text-center" scope="col">Nro Pedido</th>
+          <th class="text-center" scope="col">Data Cadastro</th>
+          <th class="text-center" scope="col">Data Entrega</th>
           <th scope="col">Nome</th>
-          <th scope="col">Data Cadastro</th>
-          <th scope="col">Data Entrega</th>
-          <th scope="col">Valor: R$</th>
+          <th class="text-end" scope="col">Total: R$</th>
+          <th class="text-center" scope="col">Status</th>
         </tr>
       </thead>
 
       <tbody>
-        @for (pedidoSintetico of pedidosSinteticos; track pedidoSintetico.id) {
+        @for (pedidoSintetico of pedidosSinteticos(); track pedidoSintetico.id) {
           <tr>
-            <td>{{ pedidoSintetico.nroPedido }}</td>
-            <td>{{ pedidoSintetico.dataCadastro }}</td>
-            <td>{{ pedidoSintetico.dataEntrega }}</td>
-            <td>{{ pedidoSintetico.valorTotal }}</td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center">
+                <div class="tabela-acao">
+                  <i class="bi bi-pencil-square" placement="top" ngbTooltip="Movimentar" (click)="movimentar(pedidoSintetico)"></i>
+                </div>
+              </div>
+            </td>
+
+            <td class="text-center">{{ pedidoSintetico.id }}</td>
+            <td class="text-center">{{ pedidoSintetico.nroPedido }}</td>
+            <td class="text-center">{{ pedidoSintetico.dataCadastro | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td class="text-center">{{ pedidoSintetico.dataEntrega | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td>{{ pedidoSintetico.nome }}</td>
+            <td class="text-end">{{ pedidoSintetico.valorTotal | currency: "BRL" : "symbol" : "1.2-3" : "pt-BR" }}</td>
+            <td class="text-center">{{ pedidoSintetico.status?.nome }}</td>
           </tr>
         }
       </tbody>

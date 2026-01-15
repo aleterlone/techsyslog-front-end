@@ -146,7 +146,7 @@
             formularioEnviado &&
             (
               fe['cep'].hasError('required') ||
-              fe['cep'].hasError('invalid')
+              fe['cep'].hasError('pattern')
             )
           "
         />
@@ -156,7 +156,7 @@
             <div class="fs-7 fw-bold text-danger">CEP em branco!</div>
           }
 
-          @if (fe['cep'].hasError('minlength')) {
+          @if (fe['cep'].hasError('pattern')) {
             <div class="fs-7 fw-bold text-danger">CEP inválido!</div>
           }
         }
@@ -295,6 +295,7 @@
           type="text"
           id="estado"
           maxlength="2"
+          formControlName="estado"
           [class.is-invalid]="
             formularioEnviado &&
             (

@@ -12,15 +12,17 @@
       <thead>
         <tr>
           <th></th>
-          <th scope="col">Id</th>
+          <th class="text-center" scope="col">Id</th>
           <th scope="col">Nome</th>
           <th scope="col">E-mail</th>
         </tr>
       </thead>
 
       <tbody>
-        @for (usuario of usuarios; track usuario.id) {
+        @for (usuario of usuarios(); track usuario.id) {
           <tr>
+            <td></td>
+            <td class="text-center">{{ usuario.id }}</td>
             <td>{{ usuario.nome }}</td>
             <td>{{ usuario.email }}</td>
           </tr>

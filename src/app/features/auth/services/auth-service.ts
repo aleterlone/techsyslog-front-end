@@ -11,6 +11,7 @@ import { StorageService } from '../../../core/storages/storage-service';
 
 import { AuthLogin } from '../models/auth-login';
 import { AuthToken } from '../models/auth-token';
+import { Usuario } from '../../usuarios/models/usuario';
 
 // Shared
 
@@ -27,6 +28,17 @@ export class AuthService {
   private readonly _httpErrorHandlerService = inject(HttpErrorHandlerService);
 
   constructor() { }
+
+  incluir(usuario: Usuario): Observable<Usuario | null> {
+    return this._http.post<Usuario | null>(environment.urlAPI + "/auth/incluir", usuario)
+      .pipe(
+        catchError((error) => {
+          this._httpErrorHandlerService.handlerError(error);
+
+          return of(null);
+        })
+      );
+  }
 
   login(auth_login: AuthLogin): Observable<boolean> {
     return this._http.post<AuthToken>(environment.urlAPI + "/auth/login", auth_login)

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 // Shared
 
-import { ToastEstilo } from '../../../shared/enums';
+import { ToastEstiloEnum } from '../../../shared/enums';
 import { ToastService } from '../../../shared/components/toasts/services/toast-service';
 
 @Injectable({
@@ -16,6 +16,6 @@ export class HttpErrorHandlerService {
   handlerError(error: HttpErrorResponse)  {
     console.log(error);
 
-    this._toastService.exibir(ToastEstilo.Danger, "Houve um erro...");
+    this._toastService.exibir(ToastEstiloEnum.Danger, "Houve um erro...");
   }
 }

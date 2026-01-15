@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Features
@@ -27,7 +27,7 @@ export class UsuarioListar {
 
   private readonly _usuarioService = inject(UsuarioService);
 
-  usuarios: Usuario[] = [];
+  usuarios = signal<Usuario[]>([]);
 
   constructor() { }
 
@@ -41,7 +41,7 @@ export class UsuarioListar {
 
   obterDados() {
     this._usuarioService.obter().subscribe((resultado) => {
-      this.usuarios = resultado;
+      this.usuarios.set(resultado);
     });
   }
 }

@@ -12,3 +12,7 @@
 .ngb-dp-weekday.small {
   color: var(--bs-primary);
 }
+
+.tabela-acao {
+  cursor: pointer;
+}

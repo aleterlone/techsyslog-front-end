@@ -1,0 +1,98 @@
+<ng-template #pedidoMovimentarModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modalPedidoMovimentar">Pedido - Movimentar</h4>
+		<button type="button" class="btn-close" aria-label="Fechar" tabindex="-1" (click)="monitorar(modalResultadoEnum.Cancelar)"></button>
+	</div>
+
+  <div class="modal-body">
+    <form [formGroup]="formulario" (ngSubmit)="monitorar(modalResultadoEnum.Salvar)">
+			<div class="row">
+				<div class="col-sm-3">
+					<label class="form-label" for="nroPedido">Nro Pedido:</label>
+
+					<input class="form-control" id="nroPedido" formControlName="nro_pedido" />
+				</div>
+
+				<div class="col-sm-9">
+					<label class="form-label" for="nome">Nome:</label>
+
+					<input class="form-control" id="nome" formControlName="nome" />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<label class="form-label" for="pedidoStatus">Status:</label>
+
+					<select
+						class="form-select"
+						id="pedidoStatus"
+						formControlName="id_pedido_status"
+						(change)="selecionarPedidoStatus()"
+						[class.is-invalid]="
+							formularioEnviado &&
+							(
+								f['id_pedido_status'].hasError('required')
+							)
+						"
+					>
+						<option [ngValue]="''">Selecionar status...</option>
+
+						@for (pedidoStatus of pedidosStatus; track pedidoStatus.id) {
+							<option [ngValue]="pedidoStatus.id">{{ pedidoStatus.nome }}</option>
+						}
+					</select>
+
+					@if (formularioEnviado) {
+						@if (f['id_pedido_status'].hasError('required')) {
+							<div class="fs-7 fw-bold text-danger">Status em branco!</div>
+						}
+					}
+				</div>
+			</div>
+
+			@if (pedidoStatusSelecionado != null && pedidoStatusSelecionado.id == pedidoStatusEnum.Entregue) {
+				<div class="row">
+					<div class="col-sm-4">
+						<label class="form-label" for="dataEntrega">Dt. Entrega:</label>
+
+						<input
+							class="form-control"
+							type="text"
+							id="dataEntrega"
+							maxlength="10"
+							placeholder="DD/MM/AAAA"
+							formControlName="dt_entrega"
+							ngbDatepicker
+							#dt_entrega="ngbDatepicker"
+							[firstDayOfWeek]="7"
+							(click)="dt_entrega.toggle()"
+							[class.is-invalid]="
+								formularioEnviado &&
+								(
+									f['dt_entrega'].hasError('required') ||
+									f['dt_entrega'].hasError('ngbDate')
+								)
+							"
+						/>
+
+						@if (formularioEnviado) {
+							@if (f['dt_entrega'].hasError('required')) {
+								<div class="fs-7 fw-bold text-danger">Dt. Entrega em branco!</div>
+							}
+
+							@if (f['dt_entrega'].hasError('ngbDate')) {
+								<div class="fs-7 fw-bold text-danger">Dt. Entrega inválida!</div>
+							}
+						}
+					</div>
+				</div>
+			}
+    </form>
+  </div>
+
+	<div class="modal-footer justify-content-center">
+		<button class="btn btn-outline-success" type="button" (click)="monitorar(modalResultadoEnum.Salvar)">Salvar</button>
+		<button class="btn btn-outline-danger" type="button" (click)="monitorar(modalResultadoEnum.Cancelar)">Cancelar</button>
+	</div>
+</ng-template>

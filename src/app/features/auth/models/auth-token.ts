@@ -1,5 +1,5 @@
 export interface AuthToken {
-  token: string;
+  token: string | null;
   usuarioNome: string;
   usuarioId: number;
 }

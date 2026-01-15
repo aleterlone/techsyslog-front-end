@@ -5,16 +5,17 @@ import { CanActivateFn, Router } from '@angular/router';
 
 import { AuthService } from '../../features/auth/services/auth-service';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const homeGuard: CanActivateFn = (route, state) => {
   const _router = inject(Router);
 
   const _authService = inject(AuthService);
 
-  if (!_authService.obterStatus()) {
+  if (_authService.obterStatus()) {
     return true;
   }
 
-  _router.navigate(["/home"]);
+  _router.navigate(["/auth"]);
+
 
   return false;
 };

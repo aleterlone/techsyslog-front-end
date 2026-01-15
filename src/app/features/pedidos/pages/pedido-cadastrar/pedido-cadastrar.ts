@@ -18,7 +18,7 @@ import { PedidoSintetico } from '../../models/pedido-sintetico';
 import { formatarNumeroDecimal } from '../../../../shared/formatters';
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
 import { REGEX } from '../../../../shared/constants';
-import { ToastEstilo } from '../../../../shared/enums';
+import { ToastEstiloEnum } from '../../../../shared/enums';
 import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
 import { validarNumeroDecimal } from '../../../../shared/validators';
 import { ValorMonetarioDirective } from '../../../../shared/directives/valor-monetario';
@@ -44,6 +44,16 @@ export class PedidoCadastrar {
 
   private readonly _toastService = inject(ToastService);
 
+  // Data (Hoje)
+
+  hoje = new Date();
+
+  dataHoje = {
+    year: this.hoje.getFullYear(),
+    month: this.hoje.getMonth() + 1,
+    day: this.hoje.getDate()
+  };
+
   // Formulários
 
   formularioEndereco!: FormGroup;
@@ -52,14 +62,6 @@ export class PedidoCadastrar {
   formularioEnviado: boolean = false;
 
   constructor() {
-    const hoje = new Date();
-
-    const dataHoje = {
-      year: hoje.getFullYear(),
-      month: hoje.getMonth() + 1,
-      day: hoje.getDate()
-    };
-
     this.formularioEndereco = this._formBuilder.group({
       cep: ["", [Validators.required, Validators.pattern(REGEX.CEP)]],
       logradouro: ["", [Validators.required, Validators.minLength(3)]],
@@ -72,7 +74,7 @@ export class PedidoCadastrar {
 
     this.formularioPedidoSintetico = this._formBuilder.group({
       nro_pedido: [{ value: 0, disabled: true }],
-      dt_cadastro: [dataHoje, Validators.required],
+      dt_cadastro: [this.dataHoje, Validators.required],
       nome: ["", [Validators.required, Validators.minLength(3)]],
       descricao: ["", [Validators.required, Validators.minLength(3)]],
       valor_total: ["", Validators.required]
@@ -98,13 +100,13 @@ export class PedidoCadastrar {
       }
 
       const enderecoEntrega: Endereco = {
-        cep: this.fe["cep"].value.toString(),
+        cep: this.fe["cep"].value.replaceAll("-", "").toString(),
         logradouro: this.fe["logradouro"].value.toString().trim(),
         numero: this.fe["numero"].value.toString().trim(),
         complemento: complemento,
         bairro: this.fe["bairro"].value.toString().trim(),
         cidade: this.fe["cidade"].value.toString().trim(),
-        estado: this.fe["estado"].value.toString().trim()
+        estado: this.fe["estado"].value.toString().trim().toUpperCase()
       };
 
       const pedidoSintetico: PedidoSintetico = {
@@ -112,9 +114,11 @@ export class PedidoCadastrar {
         nroPedido: null,
         dataCadastro: new Date(),
         dataEntrega: null,
-        descricao: this.fp["email"].value.toString().trim(),
+        nome: this.fp["nome"].value.toString().trim(),
+        descricao: this.fp["descricao"].value.toString().trim(),
         valorTotal: formatarNumeroDecimal(this.fp["valor_total"].value),
-        enderecoEntrega: enderecoEntrega
+        enderecoEntrega: enderecoEntrega,
+        status: null
       }
 
       observer.next(pedidoSintetico);
@@ -125,13 +129,17 @@ export class PedidoCadastrar {
   limparFormulario() {
     this.formularioEndereco.reset();
     this.formularioPedidoSintetico.reset();
+
+    this.formularioEnviado = false;
+
+    this.fp["dt_cadastro"].setValue(this.dataHoje);
   }
 
   salvar() {
     this.formularioEnviado = true;
 
     if (!this.formularioEndereco.valid || !this.formularioPedidoSintetico.valid) {
-      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
+      this._toastService.exibir(ToastEstiloEnum.Danger, "Campos inválidos!");
 
       return;
     }
@@ -141,7 +149,7 @@ export class PedidoCadastrar {
         if (resultado != null) {
           this.limparFormulario();
 
-          this._toastService.exibir(ToastEstilo.Danger, "Pedido incluído com sucesso!");
+          this._toastService.exibir(ToastEstiloEnum.Success, "Pedido incluído com sucesso!");
         }
       });
     });

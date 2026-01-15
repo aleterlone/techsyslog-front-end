@@ -2,7 +2,7 @@
 
 import { REGEX } from "../constants";
 
-export function formatarMoeda(valor: number | null | undefined, locale: string | undefined, currency: string | undefined): string {
+export function formatarMoeda(valor: number | null | undefined, locale?: string | null, currency?: string | null): string {
   if (locale == null) {
     locale = "pt-BR";
   }

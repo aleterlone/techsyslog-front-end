@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 // Features
 
+import { AuthService } from '../../../auth/services/auth-service';
 import { UsuarioService } from '../../services/usuario-service';
 
 // Models
@@ -14,7 +15,7 @@ import { Usuario } from '../../models/usuario';
 // Shared
 
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
-import { ToastEstilo } from '../../../../shared/enums';
+import { ToastEstiloEnum } from '../../../../shared/enums';
 import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
 import { ValoresIguaisValidator } from '../../../../shared/validators/valores.iguais.validator';
 
@@ -33,6 +34,7 @@ export class UsuarioCadastrar {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
 
+  private readonly _authService = inject(AuthService);
   private readonly _usuarioService = inject(UsuarioService);
 
   private readonly _toastService = inject(ToastService);
@@ -77,7 +79,7 @@ export class UsuarioCadastrar {
       const usuario: Usuario = {
         id: null,
         nome: this.f["nome"].value.toString().trim(),
-        email: this.f["email"].value.toString().trim().toUpperCase(),
+        email: this.f["email"].value.toString().trim().toLowerCase(),
         senha: this.f["senha"].value
       }
 
@@ -88,29 +90,45 @@ export class UsuarioCadastrar {
 
   limparFormulario() {
     this.formulario.reset();
+
+    this.formularioEnviado = false;
   }
 
   salvar() {
     this.formularioEnviado = true;
 
     if (!this.formulario.valid) {
-      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
+      this._toastService.exibir(ToastEstiloEnum.Danger, "Campos inválidos!");
 
       return;
     }
 
     this.definirUsuario().subscribe((usuarioDefinido) => {
-      this._usuarioService.incluir(usuarioDefinido).subscribe((resultado) => {
-        if (resultado != null) {
-          this.limparFormulario();
+      if (this.cadastroExterno) {
+        this._authService.incluir(usuarioDefinido).subscribe((resultado) => {
+          if (resultado != null) {
+            this._router.navigate(["/auth/login"]);
 
-          this._toastService.exibir(ToastEstilo.Danger, "Cliente incluído com sucesso!");
-        }
-      })
+            this._toastService.exibir(ToastEstiloEnum.Success, "Cadastro realizado com sucesso!");
+          }
+        });
+      } else {
+        this._usuarioService.incluir(usuarioDefinido).subscribe((resultado) => {
+          if (resultado != null) {
+            this.limparFormulario();
+
+            this._toastService.exibir(ToastEstiloEnum.Success, "Usuário incluído com sucesso!");
+          }
+        });
+      }
     });
   }
 
   voltar() {
-    this._router.navigate(["/login"]);
+    if (this.cadastroExterno) {
+      this._router.navigate(["/auth/login"]);
+    } else {
+      this._router.navigate(["/home/usuario-listar"]);
+    }
   }
 }

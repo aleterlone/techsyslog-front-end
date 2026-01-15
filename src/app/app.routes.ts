@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 // Core
 
 import { authGuard } from './core/guards/auth-guard';
+import { homeGuard } from './core/guards/home-guard';
+
 import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
 import { HomeLayout } from './core/layouts/home-layout/home-layout';
 
@@ -18,24 +20,33 @@ import { UsuarioCadastrar } from './features/usuarios/pages/usuario-cadastrar/us
 
 export const routes: Routes = [
   {
-    path: "",
-    component: AuthLayout,
+    path: "home",
+    component: HomeLayout,
     children: [
-      { path: "", pathMatch: "full", component: Login },
+      { path: "", component: Home },
+      { path: "pedido-cadastrar", component: PedidoCadastrar, canActivate: [homeGuard] },
+      { path: "pedido-listar", component: PedidoListar, canActivate: [homeGuard] },
+      { path: "usuario-cadastrar", component: UsuarioCadastrar, canActivate: [homeGuard] },
+      { path: "usuario-listar", component: UsuarioListar, canActivate: [homeGuard] }
+    ]
+  },
+  {
+    path: "auth",
+    component: AuthLayout,
+    canActivate: [authGuard],
+    children: [
+      { path: "", pathMatch: "full", redirectTo: "login" },
       { path: "login", component: Login },
       { path: "login-cadastrar", component: LoginCadastrar }
     ]
   },
   {
-    path: "home",
-    component: HomeLayout,
-    canActivate: [authGuard],
-    children: [
-      { path: "", pathMatch: "full", component: Home },
-      { path: "pedido-cadastrar", component: PedidoCadastrar },
-      { path: "pedido-listar", component: PedidoListar },
-      { path: "usuario-cadastrar", component: UsuarioCadastrar },
-      { path: "usuario-listar", component: UsuarioListar }
-    ]
+    path: "**",
+    redirectTo: "home"
+  },
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "auth"
   }
 ];

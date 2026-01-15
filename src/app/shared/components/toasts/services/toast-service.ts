@@ -7,7 +7,7 @@ import { ToastPadraoEstrutura } from '../models/toast-padrao-estrutura';
 // Shared
 
 import { DADOS } from '../../../constants/dados.constant';
-import { ToastEstilo } from '../../../enums';
+import { ToastEstiloEnum } from '../../../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -18,17 +18,17 @@ export class ToastService {
 
   readonly toasts = this._toasts.asReadonly();
 
-  exibir(toast_estilo: ToastEstilo, body: string, delay?: number | null) {
+  exibir(toast_estilo: ToastEstiloEnum, body: string, delay?: number | null) {
     let toastPadraoEstrutura = new ToastPadraoEstrutura();
 
     toastPadraoEstrutura.class = "position-fixed top-0 end-0 m-1";
 
     switch (toast_estilo) {
-      case ToastEstilo.Danger:
+      case ToastEstiloEnum.Danger:
         toastPadraoEstrutura.class += " bg-danger text-white";
 
         break;
-      case ToastEstilo.Success:
+      case ToastEstiloEnum.Success:
         toastPadraoEstrutura.class += " bg-success text-white";
 
         break;

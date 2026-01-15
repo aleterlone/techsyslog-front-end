@@ -13,8 +13,8 @@ import { AuthLogin } from '../../models/auth-login';
 
 // Shared
 
+import { ToastEstiloEnum } from '../../../../shared/enums';
 import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
-import { ToastEstilo } from '../../../../shared/enums';
 
 @Component({
   selector: 'app-login',
@@ -53,7 +53,7 @@ export class Login {
   definirLogin(): Observable<AuthLogin> {
     return new Observable<AuthLogin>((observer) => {
       const authLogin: AuthLogin = {
-        email: this.f["email"].value.toString().trim().toUpperCase(),
+        email: this.f["email"].value.toString().trim().toLowerCase(),
         senha: this.f["senha"].value.toString()
       };
 
@@ -66,7 +66,7 @@ export class Login {
     this.formularioEnviado = true;
 
     if (!this.formulario.valid) {
-      this._toastService.exibir(ToastEstilo.Danger, "Campos inválidos!");
+      this._toastService.exibir(ToastEstiloEnum.Danger, "Campos inválidos!");
 
       return;
     }
@@ -76,13 +76,13 @@ export class Login {
         if (resultado) {
           this._router.navigate(["/home"]);
         } else {
-          this._toastService.exibir(ToastEstilo.Danger, "Usuário inválido!");
+          this._toastService.exibir(ToastEstiloEnum.Danger, "Usuário inválido!");
         }
       });
     });
   }
 
   novoCadastro() {
-    this._router.navigate(["/login-cadastrar"]);
+    this._router.navigate(["/auth/login-cadastrar"]);
   }
 }

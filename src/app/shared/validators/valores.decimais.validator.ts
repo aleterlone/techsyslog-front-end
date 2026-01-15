@@ -13,7 +13,7 @@ export function validarNumeroDecimal(
 
     if (controleValor != null && controleValor != "") {
       if (REGEX.VALOR_DECIMAL_BR.test(controleValor)) {
-        controleValor = formatarMoeda(controleValor, "", "");
+        controleValor = formatarMoeda(controleValor);
 
         if (controleValor > LIMITE.VALOR_DECIMAL_BR) {
           return { invalid: true };

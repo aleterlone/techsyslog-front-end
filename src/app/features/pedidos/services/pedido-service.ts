@@ -25,6 +25,23 @@ export class PedidoService {
 
   constructor() { }
 
+	alterarPedidoStatusPorId(id: string, id_pedido_status: string, data_entrega: Date | null): Observable<boolean> {
+		const requisicao: {} = {
+			id: id,
+			idPedidoStatus: id_pedido_status,
+			dataEntrega : data_entrega
+		};
+
+		return this._http.put<boolean>(environment.urlAPI + "/pedido/alterar-pedido-status-por-id", requisicao)
+			.pipe(
+				catchError((error) => {
+					this._httpErrorHandlerService.handlerError(error);
+
+					return of(false);
+				})
+			);
+	}
+
   incluir(pedido_sintetico: PedidoSintetico): Observable<PedidoSintetico | null> {
 		return this._http.post<PedidoSintetico | null>(environment.urlAPI + "/pedido/incluir", pedido_sintetico)
 			.pipe(

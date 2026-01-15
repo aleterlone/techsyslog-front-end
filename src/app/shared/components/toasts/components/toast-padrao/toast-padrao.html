@@ -5,6 +5,7 @@
     [autohide]="true"
     [delay]="toast.delay || 5000"
     (hidden)="_toastService.remover(toast)"
+    style="z-index: 9999;"
   >
     {{ toast.body }}
   </ngb-toast>

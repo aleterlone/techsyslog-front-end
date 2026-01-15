@@ -29,7 +29,7 @@ export class MenuSuperior {
 
   sair() {
     this._authService.logout().subscribe(() => {
-      this._router.navigate(["/login"]);
-    })
+      this._router.navigate(["/auth"]);
+    });
   }
 }
