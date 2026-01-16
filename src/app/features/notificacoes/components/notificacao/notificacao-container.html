@@ -1,0 +1,59 @@
+@if (exibir) {
+  <div class="border bg-white notificacao-container">
+    <div class="d-flex align-items-center border-bottom p-4 text-success">
+      <div class="flex-grow-1 fs-4 fw-bold">Notificações</div>
+
+      <div>
+        <button type="button" class="btn-close" aria-label="Fechar" tabindex="-1" (click)="fechar()"></button>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      @for (notificacao of notificacoes(); track notificacao) {
+        <div class="border-bottom p-2">
+          <div class="d-flex flex-column">
+            <div class="d-flex">
+              <div class="fw-bold">
+                Nro Pedido:
+              </div>
+
+              <div class="ms-1">
+                {{ notificacao.pedidoSintetico.nroPedido }}
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <div class="fw-bold">
+                Data Cadastro:
+              </div>
+
+              <div class="ms-1">
+                {{ notificacao.pedidoSintetico.dataCadastro | date: "dd/MM/yyyy" }}
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <div class="fw-bold">
+                Nome:
+              </div>
+
+              <div class="ms-1">
+                {{ notificacao.pedidoSintetico.nome }}
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <div class="fw-bold">
+                Total:
+              </div>
+
+              <div class="ms-1">
+                {{ notificacao.pedidoSintetico.valorTotal | currency: "BRL" : "symbol" : "1.2-3" : "pt-BR" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

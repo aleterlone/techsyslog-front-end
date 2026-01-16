@@ -21,7 +21,14 @@
       <tbody>
         @for (usuario of usuarios(); track usuario.id) {
           <tr>
-            <td></td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center">
+                <div class="tabela-acao">
+                  <i class="bi bi-pencil-square" placement="top" ngbTooltip="Alterar" (click)="alterar()"></i>
+                </div>
+              </div>
+            </td>
+
             <td class="text-center">{{ usuario.id }}</td>
             <td>{{ usuario.nome }}</td>
             <td>{{ usuario.email }}</td>

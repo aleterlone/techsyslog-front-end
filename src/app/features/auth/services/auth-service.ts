@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of, tap } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 // Core
 
@@ -70,6 +71,18 @@ export class AuthService {
       observer.next(null);
       observer.complete();
     });
+  }
+
+  obterNomeUsuario(): string | null {
+    const token: string | null | undefined = this._storageService.obter("token");
+
+    if (token != null) {
+      const decoded = jwtDecode<any>(token); // Temporário
+
+      return decoded.name;
+    }
+
+    return null;
   }
 
   obterStatus(): boolean {

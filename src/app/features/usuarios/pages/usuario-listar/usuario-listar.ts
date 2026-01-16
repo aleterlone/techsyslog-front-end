@@ -1,5 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Features
 
@@ -12,10 +14,15 @@ import { Usuario } from '../../models/usuario';
 // Shared
 
 import { PaginaTitulo } from '../../../../shared/components/pagina-titulo/pagina-titulo';
+import { ToastEstiloEnum } from '../../../../shared/enums';
+import { ToastService } from '../../../../shared/components/toasts/services/toast-service';
 
 @Component({
   selector: 'app-usuario-listar',
   imports: [
+    CommonModule,
+    NgbTooltip,
+
     PaginaTitulo
   ],
   templateUrl: './usuario-listar.html',
@@ -27,12 +34,18 @@ export class UsuarioListar {
 
   private readonly _usuarioService = inject(UsuarioService);
 
+  private readonly _toastService = inject(ToastService);
+
   usuarios = signal<Usuario[]>([]);
 
   constructor() { }
 
   ngOnInit() {
     this.obterDados();
+  }
+
+  alterar() {
+    this._toastService.exibir(ToastEstiloEnum.Success, "Em breve...");
   }
 
   incluir() {

@@ -149,7 +149,7 @@ export class PedidoCadastrar {
         if (resultado != null) {
           this.limparFormulario();
 
-          this._toastService.exibir(ToastEstiloEnum.Success, "Pedido incluído com sucesso!");
+          this._toastService.exibir(ToastEstiloEnum.Success, "Pedido incluído com sucesso! Nro Pedido: " + resultado.nroPedido);
         }
       });
     });
