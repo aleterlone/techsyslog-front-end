@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 // Shared
 
 import { DADOS } from '../../../shared/constants/dados.constant';
+import { Loading } from "../../../features/loading/components/loading/loading";
 import { ToastPadrao } from "../../../shared/components/toasts/components/toast-padrao/toast-padrao";
 
 @Component({
@@ -11,6 +12,7 @@ import { ToastPadrao } from "../../../shared/components/toasts/components/toast-
   imports: [
     RouterOutlet,
 
+    Loading,
     ToastPadrao
 ],
   templateUrl: './auth-layout.html',

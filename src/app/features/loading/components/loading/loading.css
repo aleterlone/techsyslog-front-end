@@ -1,0 +1,10 @@
+.loading {
+  position: fixed;
+  top: 0;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  background-color: #fff;
+  color: var(--bs-primary);
+}

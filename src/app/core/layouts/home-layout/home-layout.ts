@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 // Shared
 
+import { Loading } from '../../../features/loading/components/loading/loading';
 import { MenuSuperior } from '../../../shared/components/menu-superior/menu-superior';
 import { ToastPadrao } from '../../../shared/components/toasts/components/toast-padrao/toast-padrao';
 
@@ -11,6 +12,7 @@ import { ToastPadrao } from '../../../shared/components/toasts/components/toast-
   imports: [
     RouterOutlet,
 
+    Loading,
     MenuSuperior,
     ToastPadrao
   ],
