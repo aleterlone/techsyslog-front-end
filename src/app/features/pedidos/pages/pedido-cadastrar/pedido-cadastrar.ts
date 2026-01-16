@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 // Features
 
+import { EnderecoService } from '../../../enderecos/services/endereco-service';
 import { PedidoService } from '../../services/pedido-service';
 
 // Models
@@ -40,6 +41,7 @@ export class PedidoCadastrar {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
 
+  private readonly _enderecoService = inject(EnderecoService);
   private readonly _pedidoService = inject(PedidoService);
 
   private readonly _toastService = inject(ToastService);
@@ -135,6 +137,30 @@ export class PedidoCadastrar {
     this.fp["dt_cadastro"].setValue(this.dataHoje);
   }
 
+  limparFormularioEndereco() {
+    this.formularioEndereco.reset();
+  }
+
+  obterEndereco() {
+    if (
+      this.fe["cep"].value != null &&
+      this.fe["cep"].value.trim() != "" &&
+      this.fe["cep"].errors == null
+    ) {
+      this._enderecoService.obterPorCep(this.fe["cep"].value).subscribe((resultado) => {
+        if (resultado != null) {
+          this.transferirEndereco(resultado);
+        } else {
+          this.limparFormularioEndereco();
+
+          this._toastService.exibir(ToastEstiloEnum.Danger, "CEP inválido!");
+        }
+      });
+    } else {
+      this.limparFormularioEndereco();
+    }
+  }
+
   salvar() {
     this.formularioEnviado = true;
 
@@ -153,6 +179,15 @@ export class PedidoCadastrar {
         }
       });
     });
+  }
+
+  transferirEndereco(endereco: Endereco) {
+    this.fe["cep"].setValue(endereco.cep);
+    this.fe["logradouro"].setValue(endereco.logradouro);
+    this.fe["complemento"].setValue(endereco.complemento);
+    this.fe["bairro"].setValue(endereco.bairro);
+    this.fe["cidade"].setValue(endereco.cidade);
+    this.fe["estado"].setValue(endereco.estado);
   }
 
   voltar() {

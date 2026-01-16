@@ -142,6 +142,7 @@
           id="cep"
           maxlength="9"
           formControlName="cep"
+          (blur)="obterEndereco()"
           [class.is-invalid]="
             formularioEnviado &&
             (
