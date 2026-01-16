@@ -11,7 +11,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = localStorage.getItem("token");
 
-  let qtdeRequisicoes: number = 0;
+  _loadingService.incrementarRequisicao();
+
+  _loadingService.exibir.set(true);
 
   if (token != null) {
     const requisicao = req.clone({
@@ -20,21 +22,26 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
     });
 
-    qtdeRequisicoes++;
-
-    if (qtdeRequisicoes > 0) {
+    if (_loadingService.qtdeRequisicoes() > 0) {
       _loadingService.exibir.set(true);
     }
 
     return next(requisicao)
             .pipe(
               finalize(() => {
-                qtdeRequisicoes--;
+                _loadingService.decrementarRequisicao();
 
-              _loadingService.exibir.set(qtdeRequisicoes > 0);
+              _loadingService.exibir.set(_loadingService.qtdeRequisicoes() > 0);
             })
           );
   }
 
-  return next(req);
+  return next(req)
+          .pipe(
+            finalize(() => {
+              _loadingService.decrementarRequisicao();
+
+            _loadingService.exibir.set(_loadingService.qtdeRequisicoes() > 0);
+          })
+        );
 };
