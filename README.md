@@ -10,11 +10,11 @@ Aplicação front-end conectada através de uma API RESTFul, composta por autent
 
 - `Angular 21.0.8`
 - `Typescript`
+- `JWT-Decode 4.0.0`
+- `Microsoft/Signalr`
 - `Bootstrap 5.3.8`
 - `Bootstrap-Icons 1.13.1`
-- `Microsoft/Signalr`
 - `NG-Bootstrap 20.0.0`
-- `JWT-Decode 4.0.0`
 
 ## 🏗️ Arquitetura e boas práticas
 
