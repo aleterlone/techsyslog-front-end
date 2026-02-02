@@ -4,6 +4,8 @@
 
 Aplicação front-end conectada através de uma API RESTFul, composta por autenticação de usuário, cadastro e gerenciamento de pedidos, além de fluxo de notificações em tempo real para pedidos realizados.
 
+🚧 *Observação: Este projeto faz parte do meu portfólio e encontra-se em constante evolução, refletindo meu aprendizado contínuo e aprimoramento técnico.*
+
 ## 🧩 Tecnologias
 
 - `Angular 21.0.8`
